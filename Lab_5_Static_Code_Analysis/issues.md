@@ -20,3 +20,13 @@ The initial Pylint score was **6.25/10**. The original run also exposed runtime
 problems that static analysis did not fully describe: negative and text
 passenger counts were stored, empty routes could divide by zero, and the demo
 looked up `R3` after deleting it, raising `KeyError`.
+
+## Bandit findings
+
+| Issue | Category | Line(s) | Description | Severity | Solution |
+|---|---|---:|---|---|---|
+| `B110` try/except/pass | Error handling | 29 | The bare exception silently discarded failures. | Low | Removed the catch-all and made empty-route averages return `0.0`. |
+| `B311` standard pseudo-random generator | Randomness | 35 | `random.choice` was flagged as unsuitable for security-sensitive selection. | Low | Use `secrets.choice` and keep the route validation. |
+
+Bandit reported **2 low-severity findings** before the fixes and **0 findings**
+after them. No security checks were disabled or suppressed.

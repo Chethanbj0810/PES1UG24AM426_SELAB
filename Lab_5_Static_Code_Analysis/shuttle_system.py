@@ -1,7 +1,7 @@
 """Campus shuttle timetable, passenger-load, and fleet tracking tools."""
 
 import json
-import random
+import secrets
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -70,7 +70,7 @@ def assign_driver(route_id: str) -> str:
     """Choose a driver for a known route."""
     _get_route(route_id)
     drivers = ["Prakash", "Leela", "Imran", "Tom"]
-    return random.choice(drivers)
+    return secrets.choice(drivers)
 
 
 def sync_fleet_data(file: str | Path = "fleet.json") -> dict[str, Any]:
