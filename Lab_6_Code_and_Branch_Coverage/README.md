@@ -1,4 +1,4 @@
-# PES University SE Lab 6: Code and Branch Coverage
+#  SE Lab 6: Code and Branch Coverage
 
 This project tests the supplied `library_fines.py` functions for calculating late fines, checking borrowing eligibility, and deciding renewal status. The application logic is unchanged from the assigned source project.
 
