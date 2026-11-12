@@ -30,3 +30,33 @@ looked up `R3` after deleting it, raising `KeyError`.
 
 Bandit reported **2 low-severity findings** before the fixes and **0 findings**
 after them. No security checks were disabled or suppressed.
+
+## Flake8 findings
+
+| Issue | Category | Line(s) | Description | Severity | Solution |
+|---|---|---:|---|---|---|
+| `E722` bare `except` | Error handling / style | 29 | The bare exception could conceal unrelated failures and violated the style checks. | Medium | Remove the broad catch and handle empty trip lists explicitly. |
+| `E302` and `E305` blank-line spacing | PEP 8 formatting | 11, 16, 19, 23, 33, 37, 45, 60 | Top-level definitions did not have the required spacing. | Low | Use two blank lines between top-level definitions. |
+| `E501` line too long | PEP 8 formatting | 13 | A source line exceeded Flake8's 79-character limit. | Low | Break long expressions and messages across lines. |
+
+Flake8 reported **10 style findings** in the original file. The final run
+reported none.
+
+## Additional runtime issues found by running the program
+
+| Issue | Category | Line(s) | Description | Severity | Solution |
+|---|---|---:|---|---|---|
+| Invalid passenger counts | Input validation | 49-50 | The demo stored `-6` and the string `"full"` as passenger counts. | Medium | Accept only non-negative integers and use valid demo values. |
+| Empty trip average | Runtime correctness | 19-21 | An empty route could cause division by zero. | Medium | Return `0.0` when no trips have been recorded. |
+| Lookup after route deletion | Runtime correctness | 55, 58 | The demo deleted `R3` and then requested its average, causing `KeyError`. | Medium | Keep the demo routes available and validate route IDs before lookup. |
+
+## Final verification
+
+- Pylint: **10.00/10**.
+- Bandit: **0 findings**.
+- Flake8: **0 findings**.
+- **16 direct checks passed**, covering valid counts, negative/string/decimal/
+  boolean counts, unknown routes, invalid log values, empty averages, driver
+  assignment, JSON write/read, and deletion handling.
+- The command-line program completed with the default route and with valid `R1`
+  input. An unknown route printed a clear message and exited without a traceback.

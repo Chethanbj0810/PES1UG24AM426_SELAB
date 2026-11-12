@@ -18,7 +18,10 @@ routes: dict[str, dict[str, Any]] = {
 def _get_route(route_id: str) -> dict[str, Any]:
     """Return a route or raise a clear error when its ID is unknown."""
     if not isinstance(route_id, str) or route_id not in routes:
-        raise ValueError(f"Unknown route: {route_id}. Expected one of {', '.join(routes)}.")
+        expected_routes = ", ".join(routes)
+        raise ValueError(
+            f"Unknown route: {route_id}. Expected one of {expected_routes}."
+        )
     return routes[route_id]
 
 
@@ -38,7 +41,10 @@ def add_trip_log(
 
     if logs is None:
         logs = []
-    elif not isinstance(logs, list) or any(not isinstance(entry, str) for entry in logs):
+    elif (
+        not isinstance(logs, list)
+        or any(not isinstance(entry, str) for entry in logs)
+    ):
         raise TypeError("Logs must be a list of strings.")
 
     route["trips"].append(passenger_count)
@@ -54,7 +60,7 @@ def remove_route(route_id: str) -> None:
 
 
 def average_load(route_id: str) -> float:
-    """Return a route's average passenger count, or zero when it has no trips."""
+    """Return the average passenger count, or zero when no trips are logged."""
     trips = _get_route(route_id)["trips"]
     if not trips:
         return 0.0
@@ -63,7 +69,11 @@ def average_load(route_id: str) -> float:
 
 def underused_routes() -> list[str]:
     """Return route IDs whose average load is below the minimum capacity."""
-    return [route_id for route_id in routes if average_load(route_id) < MIN_CAPACITY]
+    return [
+        route_id
+        for route_id in routes
+        if average_load(route_id) < MIN_CAPACITY
+    ]
 
 
 def assign_driver(route_id: str) -> str:
@@ -76,7 +86,9 @@ def assign_driver(route_id: str) -> str:
 def sync_fleet_data(file: str | Path = "fleet.json") -> dict[str, Any]:
     """Save route data as UTF-8 JSON and return the saved representation."""
     if not isinstance(file, (str, Path)):
-        raise TypeError("Fleet data destination must be a string or pathlib.Path.")
+        raise TypeError(
+            "Fleet data destination must be a string or pathlib.Path."
+        )
 
     file_path = Path(file)
     with file_path.open("w", encoding="utf-8") as fleet_file:
