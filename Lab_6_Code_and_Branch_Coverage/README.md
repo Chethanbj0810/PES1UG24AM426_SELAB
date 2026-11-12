@@ -33,7 +33,14 @@ Result: **100% line coverage** for `library_fines.py` (32 statements, none misse
 
 ## Branch coverage
 
-The dedicated branch suite and final branch report will be added in the second Lab 6 commit.
+Run the dedicated branch suite independently:
+
+```powershell
+coverage run --branch -m pytest BranchCoverageTest_24AM426_application.py
+coverage report -m library_fines.py
+```
+
+Result: **100% combined coverage** for `library_fines.py`, with all 22 branch opportunities covered and no partial branches. The branch suite passes 15 test cases.
 
 ## Screenshots
 
